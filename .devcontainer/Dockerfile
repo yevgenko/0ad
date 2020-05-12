@@ -22,6 +22,19 @@ RUN apt-get update \
     # Install C++ tools
     && apt-get -y install build-essential cmake cppcheck valgrind \
     #
+    # Install 0ad required dependencies
+    && apt-get -y install libboost-dev libboost-filesystem-dev \
+    libcurl4-gnutls-dev libenet-dev libgloox-dev libicu-dev \
+    libminiupnpc-dev libnvtt-dev libogg-dev libopenal-dev \
+    libpng-dev libsdl2-dev libvorbis-dev libxcursor-dev \
+    libxml2-dev python subversion zlib1g-dev libenet-dev \
+    libboost-system-dev \
+    #
+    # Install 0ad WX libraries for editing tools
+    && apt-get -y install wx3.0-headers=3.0.2+dfsg-4 \
+    libwxbase3.0-dev=3.0.2+dfsg-4 libwxgtk3.0-dev=3.0.2+dfsg-4 \
+    libwxbase3.0-0v5=3.0.2+dfsg-4 libwxgtk3.0-0v5=3.0.2+dfsg-4 \
+    #
     # [Optional] Update UID/GID if needed
     && if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
         groupmod --gid $USER_GID $USERNAME \
@@ -36,3 +49,12 @@ RUN apt-get update \
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
+
+# Install 0ad required dependencies
+ADD libsodium-1.0.17.tar.gz /workspaces/libsodium/
+RUN cd /workspaces/libsodium/libsodium-1.0.17 \
+    && ./configure \
+    && make && make check \
+    && make install
+
+RUN ldconfig
