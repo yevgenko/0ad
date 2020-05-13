@@ -8,13 +8,17 @@
     sudo debootstrap --variant=buildd --arch=amd64 bionic /srv/chroot/0ad_bionic_amd64 http://archive.ubuntu.com/ubuntu/
     cd path/to/0ad/source
     sudo cp -R ./.devchroot/conf_example/etc/schroot /etc
-    schroot -c 0ad_bionic_amd64 -u root -p
+    sudo schroot -c 0ad_bionic_amd64 -u root -p
     apt-get update
     exit
 
+To use schroot service without **sudo** prefix and without password add `root-users=pete` property into `/etc/schroot/chroot.d/0ad_bionic_amd64.conf` where **pete** is your current user name.
+
+See the difference between **users** and **root-users** in the `man schroot.conf`
+
 ## Fix Locale
 
-    schroot -c 0ad_bionic_amd64 -u root -p
+    sudo schroot -c 0ad_bionic_amd64 -u root -p
     apt-get install language-pack-en
     locale-gen en_GB.UTF-8
     exit
@@ -22,8 +26,8 @@
 ## Build Project
 
     cd path/to/0ad/source
-    schroot -c 0ad_bionic_amd64 -u root -p -- cat .devchroot/requirements.txt | xargs apt-get install -y
-    schroot -c 0ad_bionic_amd64 -u wik -p
+    sudo schroot -c 0ad_bionic_amd64 -u root -p -- cat .devchroot/requirements.txt | xargs apt-get install -y
+    sudo schroot -c 0ad_bionic_amd64 -u $USERNAME -p
     cd build/workspaces
     ./update-workspaces.sh -j7
     cd gcc
@@ -33,12 +37,12 @@
 ## Running Tests
 
     cd path/to/0ad/source
-    schroot -c 0ad_bionic_amd64 -u wik -p -- binaries/system/test
+    sudo schroot -c 0ad_bionic_amd64 -u $USERNAME -p -- binaries/system/test
 
 ## Running Game
 
     cd path/to/0ad/source
-    schroot -c 0ad_bionic_amd64 -u wik -p -- binaries/system/pyrogenesis
+    sudo schroot -c 0ad_bionic_amd64 -u $USERNAME -p -- binaries/system/pyrogenesis
 
 ## Troubleshooting
 
