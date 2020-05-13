@@ -44,6 +44,10 @@ See the difference between **users** and **root-users** in the `man schroot.conf
     cd path/to/0ad/source
     sudo schroot -c 0ad_bionic_amd64 -u $USERNAME -p -- binaries/system/pyrogenesis
 
+Or if you have `root-users` configured as described earlier, you can use shorter command:
+
+    schroot -c 0ad_bionic_amd64 -p -- binaries/system/pyrogenesis
+
 ## Troubleshooting
 
 ### No sound
