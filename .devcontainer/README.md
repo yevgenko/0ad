@@ -16,8 +16,8 @@ open terminal in vscode and proceed to compiling, see next section.
 
 ### Testing
 
-cd ../../..
-binaries/system/test
+    cd ../../..
+    binaries/system/test
 
 ## Running 0ad via docker
 
