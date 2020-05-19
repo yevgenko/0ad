@@ -383,8 +383,10 @@ static void ReportSDL(const ScriptInterface& scriptInterface, JS::HandleValue se
 	snprintf(version, ARRAY_SIZE(version), "%d.%d.%d", runtime.major, runtime.minor, runtime.patch);
 	scriptInterface.SetProperty(settings, "sdl_runtime_version", version);
 
-	const char* backend = GetSDLSubsystem(g_VideoMode.GetWindow());
-	scriptInterface.SetProperty(settings, "sdl_video_backend", backend ? backend : "unknown");
+	// can't access window from current thread,
+	// g_VideoMode.GetWindow() => EXC_BAD_ACCESS
+	//const char* backend = GetSDLSubsystem(g_VideoMode.GetWindow());
+	scriptInterface.SetProperty(settings, "sdl_video_backend", "unknown");
 }
 
 static void ReportGLLimits(const ScriptInterface& scriptInterface, JS::HandleValue settings)
