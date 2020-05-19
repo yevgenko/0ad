@@ -24,7 +24,7 @@ ZLIB_VERSION="zlib-1.2.11"
 CURL_VERSION="curl-7.59.0"
 ICONV_VERSION="libiconv-1.15"
 XML2_VERSION="libxml2-2.9.8"
-SDL2_VERSION="SDL2-2.0.5"
+SDL2_VERSION="SDL2-2.0.12"
 BOOST_VERSION="boost_1_64_0"
 # NOTE: remember to also update LIB_URL below when changing version
 WXWIDGETS_VERSION="wxWidgets-3.0.3.1"
