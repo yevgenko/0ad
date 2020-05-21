@@ -148,6 +148,8 @@ MESSAGE(ResizeScreen,
 		((int, height))
 		);
 
+MESSAGE(RenderLoop, );
+
 //////////////////////////////////////////////////////////////////////////
 // Messages for map panel
 

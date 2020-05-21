@@ -33,7 +33,6 @@ public:
 	MessagePasserImpl();
 	~MessagePasserImpl();
 	virtual void Add(AtlasMessage::IMessage* msg);
-	virtual AtlasMessage::IMessage* Retrieve();
 	virtual void Query(AtlasMessage::QueryMessage* qry, void(*timeoutCallback)());
 
 	bool IsEmpty();

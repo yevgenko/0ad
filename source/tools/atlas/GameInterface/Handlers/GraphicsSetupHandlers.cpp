@@ -22,9 +22,11 @@
 #include "../CommandProc.h"
 #include "../ActorViewer.h"
 #include "../View.h"
+#include "../InputProcessor.h"
 
 #include "graphics/GameView.h"
 #include "graphics/ObjectManager.h"
+#include "gui/GUIManager.h"
 #include "lib/external_libraries/libsdl.h"
 #include "lib/ogl.h"
 #include "maths/MathUtil.h"
@@ -34,6 +36,8 @@
 #include "ps/GameSetup/Config.h"
 #include "ps/GameSetup/GameSetup.h"
 #include "renderer/Renderer.h"
+
+static InputProcessor g_Input;
 
 namespace AtlasMessage {
 
@@ -190,6 +194,41 @@ MESSAGEHANDLER(ResizeScreen)
 	// OS X seems to require this to update the GL canvas
 	Atlas_GLSetCurrent(const_cast<void*>(g_AtlasGameLoop->glCanvas));
 #endif
+}
+
+MESSAGEHANDLER(RenderLoop)
+{
+	{
+		const double time = timer_Time();
+		static double last_time = time;
+		const double realFrameLength = time-last_time;
+		last_time = time;
+		ENSURE(realFrameLength >= 0.0);
+		// TODO: filter out big jumps, e.g. when having done a lot of slow
+		// processing in the last frame
+		g_AtlasGameLoop->realFrameLength = realFrameLength;
+	}
+
+	g_Input.ProcessInput(g_AtlasGameLoop);
+
+	ReloadChangedFiles();
+
+	//RendererIncrementalLoad();
+
+	// Pump SDL events (e.g. hotkeys)
+	SDL_Event_ ev;
+	while (in_poll_priority_event(&ev))
+		in_dispatch_event(&ev);
+
+	if (g_GUI)
+		g_GUI->TickObjects();
+
+	g_AtlasGameLoop->view->Update(g_AtlasGameLoop->realFrameLength);
+
+	g_AtlasGameLoop->view->Render();
+
+	if (CProfileManager::IsInitialised())
+		g_Profiler.Frame();
 }
 
 //////////////////////////////////////////////////////////////////////////

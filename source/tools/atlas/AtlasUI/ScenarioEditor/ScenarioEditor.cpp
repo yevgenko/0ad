@@ -675,6 +675,7 @@ static void UpdateTool(ToolManager& toolManager)
 void ScenarioEditor::OnTimer(wxTimerEvent&)
 {
 	UpdateTool(m_ToolManager);
+	POST_MESSAGE(RenderLoop, );
 }
 void ScenarioEditor::OnIdle(wxIdleEvent&)
 {
