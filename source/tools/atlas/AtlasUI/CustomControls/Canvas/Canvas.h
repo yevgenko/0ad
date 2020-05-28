@@ -33,6 +33,8 @@ private:
 	void OnResize(wxSizeEvent& evt);
 	void OnMouseCaptureLost(wxMouseCaptureLostEvent& evt);
 	void OnMouse(wxMouseEvent& evt);
+	
+	wxSize GetScaledClientSize();
 
 	wxGLContext m_GLContext;
 

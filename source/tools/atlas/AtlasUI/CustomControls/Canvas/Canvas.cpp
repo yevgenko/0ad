@@ -40,16 +40,22 @@ void Canvas::OnResize(wxSizeEvent&)
 	// Be careful not to send 'resize' messages to the game before we've
 	// told it that this canvas exists
 	if (! m_SuppressResize)
-		POST_MESSAGE(ResizeScreen, (GetClientSize().GetWidth(), GetClientSize().GetHeight()));
+	{
+		const wxSize ScaledClientSize = GetScaledClientSize();
+		POST_MESSAGE(ResizeScreen, (ScaledClientSize.GetWidth(), ScaledClientSize.GetHeight()));
 		// TODO: fix flashing
+	}
 }
 
 void Canvas::InitSize()
 {
 	m_SuppressResize = false;
-	SetSize(GetClientSize());
+	SetSize(GetScaledClientSize());
 }
 
+wxSize Canvas::GetScaledClientSize() {
+	return GetClientSize() * GetContentScaleFactor();
+}
 
 void Canvas::OnMouseCaptureLost(wxMouseCaptureLostEvent& WXUNUSED(evt))
 {
